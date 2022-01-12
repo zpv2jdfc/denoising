@@ -38,8 +38,8 @@ def shift(aa):
             else:
                 aa[i][j] = aa[i][j] - tmp2
     return aa
-def specdram(data):
-    f, t, zxx = signal.stft(data,fs=40,nperseg=40,noverlap=30) #f:采样频率数组；t:段时间数组；Zxx:STFT结果
+def specdram(data,a=40,b=40,c=30):
+    f, t, zxx = signal.stft(data,fs=a,nperseg=b,noverlap=c) #f:采样频率数组；t:段时间数组；Zxx:STFT结果
     plt.subplot(211)
     plt.pcolormesh(t, f, np.abs(zxx))
     plt.colorbar()
@@ -126,9 +126,13 @@ def testEMD(imfs, res):
         f, t, zxx = signal.stft(imfs[i], fs=40, nperseg=40, noverlap=30)  # f:采样频率数组；t:段时间数组；Zxx:STFT结果
         _,newImf[i] = signal.istft(shift(zxx), fs=40, nperseg=40, noverlap=30)
     for i in range(len(newImf)):
-        specdram(newImf[i])
+        # specdram(newImf[i])
         res = res + newImf[i]
-
+    specdram(newImf[0],40,40,30)
+    specdram(newImf[1],40,128,96)
+    specdram(newImf[1]+newImf[2]+newImf[3],40,256,128)
+    specdram(newImf[4] + newImf[2] + newImf[3],40,256,192)
+    specdram(newImf[5] + newImf[6] + newImf[7],40,128,96)
     #原始信号
     plt.subplot(311)
     plt.plot(range(len(data)),data)
@@ -228,4 +232,4 @@ def wavelet_spec():
     plt.show()
 def test():
     specdram(data)
-    wavelet_spec()
+    emd()
